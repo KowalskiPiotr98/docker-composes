@@ -1,0 +1,51 @@
+---
+version: "2.2"
+
+services:
+  jira-software:
+    image: atlassian/jira-software:latest
+    container_name: jira
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:8080:8080"
+    depends_on:
+      - postgres
+    volumes:
+      - jira_data:/var/atlassian/application-data/jira
+    environment:
+      ATL_TOMCAT_CONTEXTPATH: /jira
+
+  confluence-server:
+    image: atlassian/confluence-server:latest
+    container_name: confluence
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:8090:8090"
+      - "0.0.0.0:8091:8091"
+    depends_on:
+      - postgres
+    volumes:
+      - confluence_data:/var/atlassian/application-data/confluence
+    environment:
+      ATL_TOMCAT_CONTEXTPATH: /wiki
+
+  postgres:
+    image: postgres:10
+    container_name: jira_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_ENCODING: UNICODE
+      POSTGRES_COLLATE: C
+      POSTGRES_COLLATE_TYPE: C
+    volumes:
+      - postgres_jira_data:/var/lib/postgresql/data
+
+volumes:
+  jira_data:
+    driver: local
+  confluence_data:
+    driver: local
+  postgres_jira_data:
+    driver: local
+
