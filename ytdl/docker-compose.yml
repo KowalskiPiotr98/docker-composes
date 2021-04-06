@@ -1,0 +1,8 @@
+version: '2.4'
+
+services:
+    ytdl:
+        image: algram/ytdl-webserver:latest
+        ports:
+            - 127.0.0.1:3000:3000
+        mem_limit: 512m 
