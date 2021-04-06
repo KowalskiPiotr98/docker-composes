@@ -2,11 +2,7 @@ version: '3.5'
 
 volumes:
     shaarli-cache:
-        external: true
-        name: shaarli-cache
     shaarli-data:
-        external: true
-        name: shaarli-data
 
 services:
     shaarli:
