@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+    roundcubemail:
+        environment:
+            - ROUNDCUBEMAIL_DEFAULT_HOST=tls://<mailserver>
+            - ROUNDCUBEMAIL_SMTP_SERVER=tls://<mailserver>
+            - ROUNDCUBEMAIL_DB_TYPE=mysql
+            - ROUNDCUBEMAIL_DB_HOST=database
+            - ROUNDCUBEMAIL_DB_USER=roundcube
+            - ROUNDCUBEMAIL_DB_PASSWORD=<password>
+        ports:
+            - '127.0.0.1:9468:80'
+        depends_on:
+            - "database"
+        image: roundcube/roundcubemail
+        restart: unless-stopped
+
+    database:
+        image: mysql
+        restart: unless-stopped
+        environment:
+            - MYSQL_USER=roundcube
+            - MYSQL_PASSWORD=<password>
+            - MYSQL_DATABASE=roundcubemail
+            - MYSQL_RANDOM_ROOT_PASSWORD=yes
+        volumes:
+            - ./data:/var/lib/mysql
